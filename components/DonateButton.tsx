@@ -4,10 +4,31 @@ import { Heart } from 'lucide-react';
 
 const DonateButton: React.FC = () => {
     const publicKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxx';
-    const [email, setEmail] = useState('donor@example.com');
-    const [amount, setAmount] = useState(10000); // Amount in kobo/cents. 100.00 KES
+    const [email, setEmail] = useState('');
+    const [amount, setAmount] = useState(100000); // Default to 1000 KES (in cents)
+    const [customAmount, setCustomAmount] = useState(''); // For visual input
     const [name, setName] = useState('Anonymous Donor');
     const [phone, setPhone] = useState('');
+
+    // Presets in KES (stored in cents for Paystack)
+    const PRESETS = [
+        { label: 'KES 500', value: 50000 },
+        { label: 'KES 1,000', value: 100000 },
+        { label: 'KES 2,500', value: 250000 },
+    ];
+
+    const handlePresetClick = (value: number) => {
+        setAmount(value);
+        setCustomAmount(''); // Clear custom input when preset is chosen
+    };
+
+    const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value;
+        setCustomAmount(val);
+        if (val) {
+            setAmount(Number(val) * 100); // Convert to cents
+        }
+    };
 
     const componentProps = {
         email,
@@ -24,25 +45,6 @@ const DonateButton: React.FC = () => {
         onSuccess: () => alert("Thanks for your donation!"),
         onClose: () => alert("Wait! We need your help!"),
     }
-
-    // Use a custom button trigger to handle the UI better or a modal approach
-    // For simplicity and aesthetic matching, we'll trigger a modal or just use the button directly but styled
-    // Since PaystackButton renders a button, we can style it.
-    // However, usually we want to capture amount first.
-    // For the "Click to Donate" simple flow without inputting amount on our site (Paystack popup handles card details but amount is usually pre-set or passed).
-    // Wait, Paystack Inline JS (which react-paystack uses) usually requires amount passed in.
-    // To allow user to choose amount, we'd need a small modal on our side *before* the Paystack popup, OR we use a Paystack Payment Page link.
-    // But the requirement is "Donate CTA".
-    // Let's create a button that opens a simple native dialog to ask for amount/email, then triggers paystack?
-    // Or simpler: A fixed amount "Support Us" button, or minimal fields.
-
-    // Let's stick to a clean UI: A button "Donate" that perhaps opens a small overlay (modal) to enter amount, then "Proceed to Pay".
-
-    // Actually, to keep it very simple for the MVP of "Add Donate CTA":
-    // We'll make it a link to a Paystack Payment Page if the user had one (easiest), 
-    // BUT the request implies integration ("set up a Paystack account").
-    // Let's assume we want the popup. 
-    // We will create a button that, when clicked, opens a simple modal to enter amount/email.
 
     const [showModal, setShowModal] = useState(false);
 
@@ -81,19 +83,39 @@ const DonateButton: React.FC = () => {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full p-2 border border-gray-300 rounded focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] outline-none"
-                                    placeholder="jane@example.com"
+                                    className="w-full p-2 border border-gray-300 rounded focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] outline-none placeholder:text-gray-300"
+                                    placeholder="Enter your email"
                                 />
                             </div>
+
                             <div>
-                                <label className="block text-sm font-bold text-[#1a472a] mb-1">Amount (KES)</label>
-                                <input
-                                    type="number"
-                                    value={amount / 100}
-                                    onChange={(e) => setAmount(Number(e.target.value) * 100)}
-                                    className="w-full p-2 border border-gray-300 rounded focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] outline-none"
-                                    placeholder="1000"
-                                />
+                                <label className="block text-sm font-bold text-[#1a472a] mb-2">Select Amount</label>
+                                <div className="grid grid-cols-3 gap-2 mb-3">
+                                    {PRESETS.map((preset) => (
+                                        <button
+                                            key={preset.value}
+                                            onClick={() => handlePresetClick(preset.value)}
+                                            className={`py-2 px-1 rounded border transition-colors text-sm font-semibold
+                                                ${amount === preset.value && !customAmount
+                                                    ? 'bg-[#1a472a] text-white border-[#1a472a]'
+                                                    : 'bg-white text-[#1a472a] border-gray-300 hover:border-[#1a472a]'
+                                                }`}
+                                        >
+                                            {preset.label}
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="relative">
+                                    <span className="absolute left-3 top-2.5 text-gray-500 text-sm">KES</span>
+                                    <input
+                                        type="number"
+                                        value={customAmount}
+                                        onChange={handleCustomAmountChange}
+                                        className={`w-full p-2 pl-12 border rounded focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] outline-none 
+                                            ${customAmount ? 'border-[#d4af37] ring-1 ring-[#d4af37]' : 'border-gray-300'}`}
+                                        placeholder="Other amount"
+                                    />
+                                </div>
                             </div>
 
                             <div className="pt-4">

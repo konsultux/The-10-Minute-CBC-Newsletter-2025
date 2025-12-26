@@ -5,13 +5,15 @@ import { Heart } from 'lucide-react';
 const DonateButton: React.FC = () => {
     const publicKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxx';
     const [email, setEmail] = useState('donor@example.com');
-    const [amount, setAmount] = useState(100000); // Amount in kobo (1000.00 NGN)
+    const [amount, setAmount] = useState(10000); // Amount in kobo/cents. 100.00 KES
     const [name, setName] = useState('Anonymous Donor');
     const [phone, setPhone] = useState('');
 
     const componentProps = {
         email,
         amount,
+        currency: 'KES',
+        channels: ['card', 'mobile_money'],
         metadata: {
             name,
             phone,
@@ -84,7 +86,7 @@ const DonateButton: React.FC = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-bold text-[#1a472a] mb-1">Amount (NGN)</label>
+                                <label className="block text-sm font-bold text-[#1a472a] mb-1">Amount (KES)</label>
                                 <input
                                     type="number"
                                     value={amount / 100}

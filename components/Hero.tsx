@@ -2,6 +2,8 @@ import React from 'react';
 import { INTRO_TEXT } from '../constants';
 import { Star, MessageCircle } from 'lucide-react';
 
+import { clarity } from 'react-microsoft-clarity';
+
 const Hero: React.FC = () => {
   return (
     <section className="relative py-16 md:py-24 px-4 container mx-auto text-center overflow-hidden">
@@ -41,6 +43,7 @@ const Hero: React.FC = () => {
             href="https://chat.whatsapp.com/IhnDkL4i84gBitS5pnIbdZ"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => (clarity as any).setEvent('join_community_click')}
             className="inline-flex items-center gap-2 bg-[#d4af37] text-[#1a472a] px-8 py-3 rounded-full font-bold text-lg shadow-lg hover:bg-[#c41e3a] hover:text-white hover:scale-105 transition-all duration-300 transform"
           >
             <MessageCircle size={24} />

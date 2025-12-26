@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PaystackButton } from 'react-paystack';
 import { Heart } from 'lucide-react';
+import StatusModal, { PaymentStatus } from './StatusModal';
 
 const DonateButton: React.FC = () => {
     const publicKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxx';
@@ -9,6 +10,7 @@ const DonateButton: React.FC = () => {
     const [customAmount, setCustomAmount] = useState(''); // For visual input
     const [name, setName] = useState('Anonymous Donor');
     const [phone, setPhone] = useState('');
+    const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(null);
 
     // Presets in KES (stored in cents for Paystack)
     const PRESETS = [
@@ -42,8 +44,11 @@ const DonateButton: React.FC = () => {
         },
         publicKey,
         text: "Donate",
-        onSuccess: () => alert("Thanks for your donation!"),
-        onClose: () => alert("Wait! We need your help!"),
+        onSuccess: () => {
+            setShowModal(false);
+            setPaymentStatus('success');
+        },
+        onClose: () => setPaymentStatus('error'),
     }
 
     const [showModal, setShowModal] = useState(false);
@@ -58,6 +63,7 @@ const DonateButton: React.FC = () => {
                 <span className="hidden md:inline">Donate</span>
                 <span className="md:hidden">Give</span>
             </button>
+
 
             {showModal && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
@@ -132,6 +138,12 @@ const DonateButton: React.FC = () => {
                     </div>
                 </div>
             )}
+
+            <StatusModal
+                status={paymentStatus}
+                onClose={() => setPaymentStatus(null)}
+                onRetry={() => setPaymentStatus(null)}
+            />
         </>
     );
 };

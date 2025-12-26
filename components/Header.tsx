@@ -1,5 +1,6 @@
 import React from 'react';
 import { BookOpen, MessageCircle } from 'lucide-react';
+import DonateButton from './DonateButton';
 
 const Header: React.FC = () => {
   return (
@@ -30,6 +31,7 @@ const Header: React.FC = () => {
             <span className="hidden md:inline">Join Community</span>
             <span className="md:hidden">Join</span>
           </a>
+          <DonateButton />
         </div>
       </div>
     </header>

@@ -79,7 +79,7 @@ const UpcomingEvent: React.FC = () => {
                                             <img
                                                 src="/images/speaker-profile-image.jpg"
                                                 alt={UPCOMING_EVENT.speaker}
-                                                className="w-full h-full object-cover"
+                                                className="w-full h-full object-cover object-[center_25%]"
                                             />
                                         </div>
                                     </div>

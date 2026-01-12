@@ -55,7 +55,8 @@ export const UPCOMING_EVENT: EventDetails = {
   speaker: "Dr. Bob Schuchts",
   date: "23rd JANUARY 2026",
   time: "9:00 PM",
-  description: "Following the completion of our last book for the year, Dr. Bob Schutch will be giving us a talk. The event is free of charge and open to all. Poster details and meeting link will be shared closer to the date."
+  description: "Following the completion of our last book for the year, Dr. Bob Schutch will be giving us a talk. The event is free of charge and open to all.",
+  registrationLink: "https://events.teams.microsoft.com/event/e1139611-df1e-49c1-ab6a-9192f028d939@baf93589-65ec-4bf1-a87a-46e1fc465d98"
 };
 
 export const READING_LIST_2026: ReadingListItem[] = [

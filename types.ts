@@ -22,4 +22,5 @@ export interface EventDetails {
   date: string;
   time: string;
   description: string;
+  registrationLink?: string;
 }

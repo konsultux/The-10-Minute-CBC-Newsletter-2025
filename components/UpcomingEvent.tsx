@@ -1,10 +1,10 @@
 import React from 'react';
 import { UPCOMING_EVENT } from '../constants';
-import { Calendar, Clock, Snowflake } from 'lucide-react';
+import { Calendar, Clock, Snowflake, ExternalLink } from 'lucide-react';
 
 const UpcomingEvent: React.FC = () => {
     return (
-        <section className="py-20 relative overflow-hidden">
+        <section id="upcoming-event" className="py-20 relative overflow-hidden">
             {/* Background with Festive Gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#0f2d1e] via-[#8f1525] to-[#0f2d1e] z-0"></div>
 
@@ -69,6 +69,19 @@ const UpcomingEvent: React.FC = () => {
                                             <span className="text-white font-bold tracking-wide text-sm md:text-base">{UPCOMING_EVENT.time}</span>
                                         </div>
                                     </div>
+                                    {UPCOMING_EVENT.registrationLink && (
+                                        <div className="mt-8 flex justify-center md:justify-start">
+                                            <a
+                                                href={UPCOMING_EVENT.registrationLink}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 bg-[#d4af37] hover:bg-[#c5a028] text-[#0f2d1e] px-8 py-3 rounded-full font-bold transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:-translate-y-1 group"
+                                            >
+                                                <span>Register for Talk</span>
+                                                <ExternalLink size={18} className="group-hover:translate-x-1 transition-transform" />
+                                            </a>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="w-full md:w-1/3 flex flex-col items-center text-center">
